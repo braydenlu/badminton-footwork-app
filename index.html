@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Footwork Trainer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="LatoCustom.css">
+</head>
+
+<body>
+    <div class="row flex-lg-nowrap vh-100">
+        <div class="container col-lg-3 p-3">
+            <div class="top-container p-3 h-100 w-100">
+                TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            TOP CONTAINER
+            </div>
+        </div>
+        <div class="main-container col-lg-6">
+            <div class="controls-container w-75" id="controls-container">
+                <h2>Controls</h2>
+                <button class="close-button" onclick="closeControls()">
+                    × <!-- multiply symbol -->
+                </button>
+                <div class="controls">
+                    <form id="mode" class="mode-group">
+                        <label>
+                            <input type="radio" name="mode" value=0 checked>
+                            <span title="New corner at regular interval">Timer</span></label>
+                        <label>
+                            <input type="radio" name="mode" value=1>
+                            <span title="Records time to corner using mouse clicks">Target Time</span></label>
+                        <label>
+                            <input type="radio" name="mode" value=2>
+                            <span title="New corner on mouse click">Manual</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="mode" value=3>
+                            <span title="Train using set patterns of corners">Pattern</span>
+                        </label>
+                    </form>
+                    <div class="timer-container" id="timer-container">
+                        <div class="container flex">
+                            Timer (ms)
+                            <!-- <input type="range" min="500" max="5000" value="1000" step="100" class="slider" id="timer-slider"> -->
+                            <input type="number" min="500" value="1000" step="100" class="number" id="timer-number">
+                        </div>
+                        <div class="container flex">
+                            <div class="decrease-container">
+                                <input type="checkbox" name="decrease-interval" id="decrease-interval">
+                                <label for="decrease-interval" class="label">Decrease Interval By (ms)</label>
+                            </div>
+                            <!-- <input type="range" name="decrease-interval-slider" min="500" max="5000" value="1000" step="100" class="slider" id="decrease-interval-slider"> -->
+                            <input type="number" min="500" value="1000" step="100" class="number"
+                                id="decrease-interval-number">
+                        </div>
+                        <div class="container flex">
+                            <div>
+                                <input type="checkbox" name="variable-pace" id="variable-pace">
+                                <label for="variable-pace" class="label">
+                                    <span title="Randomly varies interval by up to ± this value">Variable Pace
+                                        (ms)</span>
+                                </label>
+                            </div>
+                            <!-- <input type="range" min="0" max="1000" value="100" step="50" class="slider" id="variable-slider"> -->
+                            <input type="number" min="0" value="100" step="50" class="number" id="variable-number">
+                        </div>
+                    </div>
+                    <div class="late-container container" id="late-container">
+                        <div class="late-group">
+                            <div class="late-item">
+                                <input type="checkbox" name="late-adjustment" id="late-adjustment">
+                                <label for="late-adjustment" class="label">Late Take Adjustment</label>
+                            </div>
+                            <div class="late-item">
+                                <input type="checkbox" name="stack-adjustments" id="stack-adjustments">
+                                <label for="stack-adjustments" class="label">Stack Adjustments</label>
+                            </div>
+                        </div>
+                        <!-- <input type="range" min="0" max="1000" value="100" step="50" class="slider" id="late-slider"> -->
+                        <input type="number" min="0" value="100" step="50" class="number" id="late-number">
+                    </div>
+                    <div class="rally-length-container container">
+                        <div>
+                            <label for="rally-length" class="label">Rally Length</label>
+                            <input type="number" name="rally-length" id="rally-length" min="1" value="20"
+                                class="number">
+                        </div>
+                        <div>
+                            <input type="checkbox" name="infinite-rally" id="infinite-rally">
+                            <label for="infinite-rally" class="label">Infinite Rally</label>
+                        </div>
+                    </div>
+                    <button class="corner-weighting">Adjust Corner Weights</button>
+                </div>
+            </div>
+            <div class="court-container">
+                <div class="court">
+                    <div class="corner" id="cell1" onclick="toggleCorner(this)">1</div>
+                    <div class="corner" id="cell2" onclick="toggleCorner(this)">2</div>
+                    <div class="corner" id="cell3" onclick="toggleCorner(this)">3</div>
+                    <div class="corner" id="cell4" onclick="toggleCorner(this)">4</div>
+                    <div class="center" id="center"></div>
+                    <div class="corner" id="cell5" onclick="toggleCorner(this)">5</div>
+                    <div class="corner" id="cell6" onclick="toggleCorner(this)">6</div>
+                    <div class="corner" id="cell7" onclick="toggleCorner(this)">7</div>
+                    <div class="corner" id="cell8" onclick="toggleCorner(this)">8</div>
+                </div>
+                <div class="container">
+                    <div class="rectangle diagonal top-left bottom-center" id="rectangle1"></div>
+                    <div class="rectangle vertical top bottom-center" id="rectangle2"></div>
+                    <div class="rectangle diagonal top-right bottom-center" id="rectangle3"></div>
+                    <div class="rectangle horizontal left right-center" id="rectangle4"></div>
+                    <div class="rectangle horizontal right left-center" id="rectangle5"></div>
+                    <div class="rectangle diagonal bottom-left top-center" id="rectangle6"></div>
+                    <div class="rectangle vertical bottom top-center" id="rectangle7"></div>
+                    <div class="rectangle diagonal bottom-right top-center" id="rectangle8"></div>
+                    <!-- duplicates for animation -->
+                    <div class="rectangleClone diagonal top-left bottom-center" id="rectangle9">
+                        <div class="to-top rectangle9inner" id="rectangle9inner"></div>
+                    </div>
+                    <div class="rectangleClone vertical top bottom-center to-top" id="rectangle10"></div>
+                    <div class="rectangleClone diagonal top-right bottom-center" id="rectangle11">
+                        <div class="to-top rectangle11inner" id="rectangle11inner"></div>
+                    </div>
+                    <div class="rectangleClone horizontal left right-center to-left" id="rectangle12"></div>
+                    <div class="rectangleClone horizontal right left-center to-right" id="rectangle13"></div>
+                    <div class="rectangleClone diagonal bottom-left top-center" id="rectangle14">
+                        <div class="to-bottom rectangle14inner" id="rectangle14inner"></div>
+                    </div>
+                    <div class="rectangleClone vertical bottom top-center to-bottom" id="rectangle15"></div>
+                    <div class="rectangleClone diagonal bottom-right top-center rectangle16" id="rectangle16">
+                        <div class="to-bottom rectangle16inner" id="rectangle16inner"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="center-button-container">
+                <button class="center-button start" id="start-button" onclick="start()">Start</button>
+                <button class="center-button stop hidden" id="stop-button" onclick="stop()">Stop
+                    <svg class="progress-circle-svg" viewBox="0 0 100 100">
+                        <circle class="progress-circle" id="progress-circle"></circle>
+                    </svg>
+                </button>
+            </div>
+            <div class="bottom-button-container">
+                <button class="bottom-button" id="bottom-button" onclick="openControls()">Options</button>
+            </div>
+            <div class="timer hidden" id="timer">00:00:00</div>
+        </div>
+        <div class="container col-lg-3 p-3">
+            <div class="bottom-container h-100 w-100 p-3">
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+                TOP CONTAINER
+            </div>
+        </div>
+    </div>
+    <script src="badminton-footwork.js"></script>
+</body>
+
+</html>

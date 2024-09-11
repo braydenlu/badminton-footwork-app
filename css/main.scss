@@ -1,0 +1,466 @@
+html {
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    font-size: 16pt;
+    --line-width: 15%;
+    --dark-bisque: rgb(225, 198, 166);
+    --court-green: rgb(95, 154, 97);
+    --radius: 46.5%;
+}
+
+body {
+    font-family: "Lato Custom";
+    background-color: bisque;
+    overflow: hidden;
+
+    .top-container {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .bottom-container {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .main-container {
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        place-items: center;
+
+        .controls-container {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            padding: 1rem;
+            padding-top: 0.25rem;
+            align-items: center;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            .close-button {
+                color: lightgrey;
+                background-color: rgba(0, 0, 0, 0);
+                border: none;
+                position: absolute;
+                font-size: 2rem;
+                top: 0.5rem;
+                left: 1rem;
+            }
+
+            .close-button:hover {
+                color: white;
+                cursor: pointer;
+            }
+
+            .controls {
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                font-size: 0.75rem;
+
+                .mode-group {
+                    margin: 0.5rem;
+
+                    .tooltip-text {
+                        visibility: hidden;
+                        width: 10rem;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        color: white;
+                        text-align: center;
+                        padding: 0.5rem;
+                        margin: 1rem;
+                        border-radius: 0.5rem;
+                        position: absolute;
+                        z-index: 1;
+                        top: 4rem;
+                    }
+
+                    span {
+                        z-index: 1;
+                        padding-top: 1rem;
+                        padding-bottom: 1rem;
+                    }
+                }
+
+                .container {
+                    padding: 0.5rem;
+                }
+
+                .decrease-container {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+
+                .late-container {
+                    gap: 1rem;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+
+                    .late-group {
+                        display: flex;
+                        flex-direction: column;
+
+                        .late-item {
+                            display: flex;
+                            flex-wrap: nowrap;
+                            padding: 0.25rem;
+                        }
+                    }
+
+                    .late-inputs {
+                        gap: 1rem;
+                        display: flex;
+                        align-items: center;
+                        margin: 0;
+                    }
+                }
+
+                .rally-length-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                }
+
+                .corner-weighting {
+                    margin: 1rem;
+                    margin-bottom: 0.5rem;
+                }
+            }
+
+            .number {
+                width: 3rem;
+            }
+
+            .slider {
+                flex-grow: 1;
+                min-width: 0;
+            }
+
+            .flex {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                max-width: 100%;
+                gap: 0.35rem;
+            }
+
+            .label {
+                margin-left: 0.15rem;
+                margin-right: 0.15rem;
+                text-wrap: nowrap;
+            }
+        }
+
+        .court-container {
+            margin: auto;
+            overflow: hidden;
+            display: grid;
+            max-height: 70vh;
+            aspect-ratio: 610 / 673;
+            transform: perspective(800px) rotateX(40deg) translateY(-20%);
+            transform-style: preserve-3d;
+            background-image: url("../images/Half_Badminton_Court.svg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+
+            .court {
+                transform-style: preserve-3d;
+                grid-area: 1 / 1;
+                margin: auto;
+                width: 100%;
+                height: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr 1fr;
+                gap: 10%;
+
+                .corner {
+                    transform-style: preserve-3d;
+                    background-color: rgba(0, 0, 0, 0.05);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2rem;
+                    color: rgba(255, 255, 255, 0.5);
+                }
+
+                .selected-corner {
+                    background-color: rgba(0, 0, 0, 0.2);
+                    color: white;
+                }
+
+                .center {
+                    background-color: rgba(0, 0, 0, 0);
+                }
+
+                .hidden {
+                    visibility: hidden;
+                }
+            }
+
+            .container {
+                grid-area: 1 / 1;
+                height: 100%;
+                width: 100%;
+
+                .rectangle {
+                    width: var(--line-width);
+                    position: absolute;
+                    background-color: rgba(0, 0, 0, 0.15);
+                }
+
+                .rectangleClone {
+                    width: var(--line-width);
+                    position: absolute;
+                }
+
+                .vertical {
+                    height: 50%;
+                    transform: scaleY(0);
+                }
+
+                .horizontal {
+                    width: 50%;
+                    height: var(--line-width);
+                    transform: scaleX(0);
+                }
+
+                .diagonal {
+                    height: 67.5%;
+                }
+
+                .top,
+                .bottom {
+                    left: calc((100% - var(--line-width)) / 2);
+                }
+
+                .bottom {
+                    top: 50%;
+                }
+
+                .top {
+                    bottom: 50%;
+                }
+
+                .left,
+                .right {
+                    top: calc((100% - var(--line-width)) / 2);
+                }
+
+                .right {
+                    left: 50%;
+                }
+
+                .left {
+                    right: 50%;
+                }
+
+                .top-left {
+                    bottom: calc((60% - var(--line-width)) / 2);
+                    right: calc((100% - var(--line-width)) / 2);
+                    transform: translateY(calc((-100% + 1.25 *var(--line-width)) / 2)) rotate(-42.75deg) scaleY(1%);
+                }
+
+                .top-right {
+                    bottom: calc((60% - var(--line-width)) / 2);
+                    left: calc((100% - var(--line-width)) / 2);
+                    transform: translateY(calc((-100% + 1.25 * var(--line-width)) / 2)) rotate(42.75deg) scaleY(1%);
+                }
+
+                .bottom-left {
+                    top: calc((130% - var(--line-width)) / 2);
+                    right: calc((100% - var(--line-width)) / 2);
+                    transform: translateY(-10%) rotate(43.75deg) scaleY(1%);
+                }
+
+                .bottom-right {
+                    top: calc((130% - var(--line-width)) / 2);
+                    left: calc((100% - var(--line-width)) / 2);
+                    transform: translateY(-10%) rotate(-43.75deg) scaleY(1%);
+                }
+
+                .top-center {
+                    transform-origin: top center;
+                }
+
+                .bottom-center {
+                    transform-origin: bottom center;
+                }
+
+                .right-center {
+                    transform-origin: right center;
+                }
+
+                .left-center {
+                    transform-origin: left center;
+                }
+
+                .to-right {
+                    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
+                }
+
+                .to-left {
+                    background: linear-gradient(to left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
+                }
+
+                .to-top {
+                    background: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
+                }
+
+                .to-bottom {
+                    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
+                }
+
+                .rectangle9inner,
+                .rectangle11inner,
+                .rectangle14inner,
+                .rectangle16inner {
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .rectangle9inner {
+                    transform-origin: top center;
+                }
+
+                .rectangle11inner {
+                    transform-origin: top center;
+                }
+
+                .rectangle14inner {
+                    transform-origin: bottom center;
+                }
+
+                .rectangle16inner {
+                    transform-origin: bottom center;
+                }
+            }
+        }
+
+        .center-button-container {
+            margin: 0;
+            top: 37%;
+            left: 50%;
+            position: absolute;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            .center-button {
+                text-align: center;
+                aspect-ratio: 1;
+                font-size: min(5vw, 26pt);
+                padding: 0.75rem;
+                border-radius: 100rem;
+                font-family: "Lato Custom";
+                font-weight: 700;
+                background-color: bisque;
+                color: rgb(30, 30, 30);
+                border: 0.25rem solid var(--dark-bisque);
+            }
+
+            .center-button:hover {
+                background-color: rgb(245, 218, 186);
+                color: rgb(30, 30, 30);
+            }
+
+            .start:hover {
+                border: 0.25rem solid rgb(215, 188, 156);
+            }
+
+            .center-button:active {
+                background-color: var(--dark-bisque);
+                color: black;
+            }
+
+            .stop {
+                border: 0.25rem solid var(--court-green);
+            }
+
+            .progress-circle-svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                transform: rotate(-90deg);
+            }
+
+            .progress-circle {
+                fill: none;
+                cx: 50%;
+                cy: 50%;
+                r: var(--radius);
+                stroke: var(--dark-bisque);
+                stroke-width: 6.25%;
+                stroke-dasharray: calc(2 * pi * var(--radius));
+            }
+
+            .hidden {
+                display: none;
+            }
+        }
+
+        .bottom-button-container {
+            margin: 0;
+            bottom: 7.5%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+
+            .bottom-button {
+                font-size: min(3vw, 20pt);
+                padding-top: 0.4rem;
+                padding-bottom: 0.4rem;
+                padding-right: 0.6rem;
+                padding-left: 0.6rem;
+                color: white;
+                text-align: center;
+                font-family: "Lato Custom";
+                font-weight: 600;
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+            }
+
+            .bottom-button:hover {
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+
+            .bottom-button:active {
+                background-color: rgba(0, 0, 0, 0.75);
+            }
+
+            .hidden {
+                visibility: hidden;
+            }
+        }
+
+        .timer {
+            padding: 0.5rem;
+            min-width: 5rem;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            bottom: 10%;
+            transform: translate(-50%);
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+    }
+}

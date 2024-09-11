@@ -1,0 +1,125 @@
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Regular.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Semibold.ttf);
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Bold.ttf);
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Heavy.ttf);
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Black.ttf);
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Hairline.ttf);
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-HairlineItalic.ttf);
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Thin.ttf);
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-ThinItalic.ttf);
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Light.ttf);
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-LightItalic.ttf);
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Italic.ttf);
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-Medium.ttf);
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-MediumItalic.ttf);
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-SemiboldItalic.ttf);
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-BoldItalic.ttf);
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-HeavyItalic.ttf);
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Lato Custom";
+    src: url(fonts/Lato-BlackItalic.ttf);
+    font-weight: 900;
+    font-style: italic;
+}
