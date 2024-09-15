@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
     stackAdjustments = stackAdjustmentCheckbox.checked;
     infiniteRally = infiniteRallyCheckbox.checked;
 
+    if (infiniteRally) {
+        decreaseIntervalCheckbox.disabled = true;
+    }
+
     decreaseIntervalCheckbox.addEventListener('change', () => {
         decreaseInterval = decreaseIntervalCheckbox.checked;
     });
@@ -41,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     infiniteRallyCheckbox.addEventListener('change', () => {
         infiniteRally = infiniteRallyCheckbox.checked;
+        decreaseIntervalCheckbox.disabled = infiniteRallyCheckbox.checked;
     });
 
     var savedMode = localStorage.getItem('mode');
@@ -118,6 +123,7 @@ function start() {
             var interval = parseInt(document.getElementById('timer-number').value);
             var variableNumber = parseInt(document.getElementById('variable-number').value);
             maxRallyLength = parseInt(document.getElementById('rally-length').value);
+            console.log(maxRallyLength);
             var i = 1;
             for (const corner of Array.from(document.getElementsByClassName("corner"))) {
                 if (corner.classList.contains("selected-corner")) {
@@ -137,6 +143,29 @@ function start() {
             }
             break;
         case 2:
+            disabledCornerArray = [];
+            activeCornerArray = [];
+            currentRallyLength = 0;
+            var interval = 3600000;
+            var variableNumber = 0;
+            maxRallyLength = parseInt(document.getElementById('rally-length').value);
+            var i = 1;
+            for (const corner of Array.from(document.getElementsByClassName("corner"))) {
+                if (corner.classList.contains("selected-corner")) {
+                    activeCornerArray.push(i);
+                } else {
+                    disabledCornerArray.push(corner);
+                }
+                i++;
+            }
+            if (activeCornerArray.length != 0) {
+                toggleVisibleElements();
+                doFootwork = true;
+                for (const corner of disabledCornerArray) {
+                    corner.classList.toggle("hidden");
+                }
+                footworkLoop(interval, variableNumber);
+            }
             break;
         case 3:
             break;
@@ -145,7 +174,7 @@ function start() {
 }
 
 function footworkLoop(interval, variableNumber) {
-    if (decreaseInterval) {
+    if (decreaseInterval && !infiniteRally) {
         interval -= document.getElementById('decrease-interval-number').value / document.getElementById('rally-length').value;
     }
     if (!infiniteRally) {
@@ -155,7 +184,7 @@ function footworkLoop(interval, variableNumber) {
         if (Math.random() < 0.5) {
             interval += Math.floor(Math.random() * variableNumber);
         } else {
-            interval -= Math.floor(Math.random() * variableNumber);
+            interval = Math.max(interval - Math.floor(Math.random() * variableNumber), 1);
         }
     }
     startAnimating(interval, variableNumber);
@@ -182,7 +211,7 @@ function startAnimating(interval, variableNumber) {
 
     var animation;
     var stopAnimating = stopSwitch;
-    var preAnimationLength = 200;
+    var preliminaryAnimationLength = 200;
     var oppositeTransformOriginSwitch = false;
     var preAnimationReset = false;
 
@@ -195,10 +224,12 @@ function startAnimating(interval, variableNumber) {
         }
         const elapsed = currentTime - startTime;
 
-        setTimer(interval - elapsed);
+        if (mode != 2) {
+            setTimer(interval - elapsed);
+        }
 
         // reset block
-        if (!doFootwork || (elapsed > interval && mode == 0) || (stopAnimating != stopSwitch && mode == 1)) {
+        if (!doFootwork || (elapsed > interval && mode == 0) || (stopAnimating != stopSwitch && (mode == 1 || mode == 2))) {
             startTime = undefined;
             rectangle.style.transform = rectangleOriginalTransform;
             rectangleClone.style.transform = rectangleCloneOriginalTransform;
@@ -208,7 +239,6 @@ function startAnimating(interval, variableNumber) {
             rectangleClone.style.transformOrigin = originalTransformOrigin;
             document.getElementById("progress-circle").style.strokeDashoffset = 0;
             if (mode == 1 && elapsed > interval && lateAdjustment) {
-                console.log("late adjustment");
                 if (stackAdjustments || lateAdjustments == 0) {
                     interval += parseInt(document.getElementById("late-number").value);
                     lateAdjustments++;
@@ -223,7 +253,6 @@ function startAnimating(interval, variableNumber) {
             if (doFootwork) {
                 recurse(interval, variableNumber);
             }
-            console.log(interval);
             return;
         } else {
             // Loading circle
@@ -233,8 +262,8 @@ function startAnimating(interval, variableNumber) {
                 document.getElementById("progress-circle").style.strokeDashoffset = 2 * progressCircleRadius * Math.PI * 1.01;
             }
 
-            if (elapsed < preAnimationLength) {
-                if (elapsed > preAnimationLength / 2) {
+            if (elapsed < preliminaryAnimationLength) {
+                if (elapsed > preliminaryAnimationLength / 2) {
                     if (!oppositeTransformOriginSwitch) {
                         switch (cornerNumberToHighlight) {
                             case 2:
@@ -251,23 +280,23 @@ function startAnimating(interval, variableNumber) {
                         case 3:
                         case 6:
                         case 8:
-                            innerRectangle.style.transform = `scaleY(${1 - ((elapsed - preAnimationLength / 2) / (preAnimationLength / 2))})`;
+                            innerRectangle.style.transform = `scaleY(${1 - ((elapsed - preliminaryAnimationLength / 2) / (preliminaryAnimationLength / 2))})`;
                             break;
                         case 2:
                         case 7:
-                            rectangleClone.style.transform = `scaleY(${1 - ((elapsed - preAnimationLength / 2) / (preAnimationLength / 2))})`;
+                            rectangleClone.style.transform = `scaleY(${1 - ((elapsed - preliminaryAnimationLength / 2) / (preliminaryAnimationLength / 2))})`;
                             break;
                         default:
-                            rectangleClone.style.transform = `scaleX(${1 - ((elapsed - preAnimationLength / 2) / (preAnimationLength / 2))})`;
+                            rectangleClone.style.transform = `scaleX(${1 - ((elapsed - preliminaryAnimationLength / 2) / (preliminaryAnimationLength / 2))})`;
                     }
                 } else {
-                    scaleRectangle(rectangleClone, (elapsed / (preAnimationLength / 2)), cornerNumberToHighlight, rectangleCloneComputedTransform);
+                    scaleRectangle(rectangleClone, (elapsed / (preliminaryAnimationLength / 2)), cornerNumberToHighlight, rectangleCloneComputedTransform);
                 }
 
                 // Regular rectangle starting animation
-                scaleRectangle(rectangle, elapsed / preAnimationLength, cornerNumberToHighlight, rectangleComputedTransform);
+                scaleRectangle(rectangle, elapsed / preliminaryAnimationLength, cornerNumberToHighlight, rectangleComputedTransform);
 
-                // Main animation
+            // Main animation
             } else if (elapsed < interval) {
                 if (!preAnimationReset) {
                     switch (cornerNumberToHighlight) {
@@ -285,7 +314,7 @@ function startAnimating(interval, variableNumber) {
                             scale = 1;
                     }
                 }
-                scaleRectangle(rectangle, 1 - ((elapsed - preAnimationLength) / (interval - preAnimationLength)), cornerNumberToHighlight, rectangleComputedTransform);
+                scaleRectangle(rectangle, 1 - ((elapsed - preliminaryAnimationLength) / (interval - preliminaryAnimationLength)), cornerNumberToHighlight, rectangleComputedTransform);
             }
         }
         if (doFootwork) {
@@ -307,7 +336,7 @@ function setTimer(timeLeft) {
     if (minutes < 10) {
         startText += "0";
     }
-    var seconds = Math.floor(timeLeft / 1000);
+    var seconds = Math.floor((timeLeft % 60000) / 1000);
     if (seconds < 10) {
         middleText += "0";
     }
